@@ -1,43 +1,32 @@
 #include <iostream>
+#include <string>
+#include <iomanip>
 using namespace std;
 
 bool isLeapYear(int year);
 int daysInMonth(int month, int year);
 int dayOfWeek(int month, int day, int year);
+void generateCalendar(int month, int year, string calendar[7][7]);
 int main() {
-	int year, month, day;
-	string weekDay;
+	int year, month;
+	string calendar[7][7];
+
 	do {
 		cout << "Enter a month and year or Q to quit: ";
-		cin >> month >> day >> year;
+		cin >> month >> year;
 		if (cin.fail()) {
 			return 0;
 		}
-		switch (dayOfWeek(month, day, year)) {
-		case 0: weekDay = "Saturday"; break;
-		case 1: weekDay = "Sunday"; break;
-		case 2: weekDay = "Monday"; break;
-		case 3: weekDay = "Tuesday"; break;
-		case 4: weekDay = "Wednesday"; break;
-		case 5: weekDay = "Thursday"; break;
-		case 6: weekDay = "Friday"; break;
+
+		generateCalendar(month, year, calendar);
+
+		cout << month << year << endl;
+		for (int i = 0; i < 6; ++i) {
+			for (int j = 0; j < 7; ++j) {
+				cout << setw(3) << calendar[i][j] << " ";
+			}
+			cout << endl;
 		}
-		cout << weekDay << ", ";
-		switch (month) {
-		case 1: cout << "January"; break;
-		case 2: cout << "February"; break;
-		case 3: cout << "March"; break;
-		case 4: cout << "April"; break;
-		case 5: cout << "May"; break;
-		case 6: cout << "June"; break;
-		case 7: cout << "July"; break;
-		case 8: cout << "August"; break;
-		case 9: cout << "September"; break;
-		case 10: cout << "October"; break;
-		case 11: cout << "November"; break;
-		case 12: cout << "December"; break;
-		}
-		cout << " " << day << ", " << year << endl;
 
 	} while (!cin.fail());
 }
@@ -100,5 +89,35 @@ int dayOfWeek(int month, int day, int year) {
 	int k = year % 100;
 	int j = year / 100;
 	int dayOfWeek = (day + 13 * (month + 1) / 5 + k + k / 4 + j / 4 + 5 * j) % 7;
-	return dayOfWeek;
+	return (dayOfWeek + 6) % 7;
+}
+
+
+void generateCalendar(int month, int year, string calendar[7][7]) {
+	for (int i = 0; i < 6; ++i) {
+		for (int j = 0; j < 7; ++j) {
+			calendar[i][j] = "";
+		}
+	}
+	calendar[0][0] = "Su";
+	calendar[0][1] = "Mo";
+	calendar[0][2] = "Tu";
+	calendar[0][3] = "We";
+	calendar[0][4] = "Th";
+	calendar[0][5] = "Fr";
+	calendar[0][6] = "Sa";
+
+	int firstDay = dayOfWeek(month, 1, year);
+
+	int totalDays = daysInMonth(month, year);
+	int row = 1;
+	int col = firstDay;
+	for (int day = 1; day <= totalDays; ++day) {
+		calendar[row][col] = to_string(day);
+		++col;
+		if (col == 7) {
+			col = 0;
+			++row;
+		}
+	}
 }
