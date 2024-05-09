@@ -13,7 +13,13 @@ void outputCalendarToFile(string& filename, string& monthName, int year, string 
 int main() {
 	int year, month;
 	string monthName;
-	string calendar[7][7];
+	string calendar[7][7] = { {" "," "," "," "," "," "," "},
+							  {" "," "," "," "," "," "," "},
+							  {" "," "," "," "," "," "," "},
+							  {" "," "," "," "," "," "," "},
+							  {" "," "," "," "," "," "," "},
+							  {" "," "," "," "," "," "," "},
+							  {" "," "," "," "," "," "," "} };
 
 	do {
 		cout << "Enter a month name and year or Q to quit: ";
@@ -29,7 +35,7 @@ int main() {
 		outputCalendarToFile(filename, monthName, year, calendar);
 
 		cout << monthName<< " " << year << endl;
-		for (int i = 0; i < 6; ++i) {
+		for (int i = 0; i < 7; ++i) {
 			for (int j = 0; j < 7; ++j) {
 				cout << setw(3) << calendar[i][j] << " ";
 			}
@@ -102,11 +108,6 @@ int dayOfWeek(int month, int day, int year) {
 
 
 void generateCalendar(int month, int year, string calendar[7][7]) {
-	for (int i = 0; i < 6; ++i) {
-		for (int j = 0; j < 7; ++j) {
-			calendar[i][j] = "";
-		}
-	}
 	calendar[0][0] = "Su";
 	calendar[0][1] = "Mo";
 	calendar[0][2] = "Tu";
@@ -118,6 +119,7 @@ void generateCalendar(int month, int year, string calendar[7][7]) {
 	int firstDay = dayOfWeek(month, 1, year);
 
 	int totalDays = daysInMonth(month, year);
+	cout << "total days:" << totalDays << endl <<endl;
 	int row = 1;
 	int col = firstDay;
 	for (int day = 1; day <= totalDays; ++day) {
@@ -129,6 +131,7 @@ void generateCalendar(int month, int year, string calendar[7][7]) {
 		}
 	}
 }
+
 
 int monthNameToValue(string monthName) {
 	if (monthName == "January")
@@ -167,7 +170,7 @@ void outputCalendarToFile(string& filename, string& monthName, int year, string 
 	}
 
 	outFile << monthName.substr(0, 3) + to_string(year) + ".txt";
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; i < 7; ++i) { 
 		for (int j = 0; j < 7; ++j) {
 			outFile << setw(3) << calendar[i][j] << " ";
 		}
